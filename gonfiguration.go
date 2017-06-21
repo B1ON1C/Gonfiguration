@@ -70,8 +70,8 @@ func (c *Gonfiguration) Reload() error {
 	return nil
 }
 
-// GetConfigParamAsString return the string value of the given key
-func (c *Gonfiguration) GetConfigParamAsString(key string, def string) (string, error) {
+// GetParamAsString return the string value of the given key
+func (c *Gonfiguration) GetParamAsString(key string, def string) (string, error) {
 	if c == nil || c.GonfigurationValues == nil {
 		return "", errorGonfigurationNil
 	}
@@ -83,8 +83,8 @@ func (c *Gonfiguration) GetConfigParamAsString(key string, def string) (string, 
 	return val, nil
 }
 
-// GetConfigParamAsInt return the int value of the given key
-func (c *Gonfiguration) GetConfigParamAsInt(key string, def int) (int, error) {
+// GetParamAsInt return the int value of the given key
+func (c *Gonfiguration) GetParamAsInt(key string, def int) (int, error) {
 	if c == nil || c.GonfigurationValues == nil {
 		return 0, errorGonfigurationNil
 	}
@@ -97,8 +97,8 @@ func (c *Gonfiguration) GetConfigParamAsInt(key string, def int) (int, error) {
 	return intval, nil
 }
 
-// GetConfigParamAsBool return the bool param of the given key
-func (c *Gonfiguration) GetConfigParamAsBool(key string, def bool) (bool, error) {
+// GetParamAsBool return the bool param of the given key
+func (c *Gonfiguration) GetParamAsBool(key string, def bool) (bool, error) {
 	if c == nil || c.GonfigurationValues == nil {
 		return false, errorGonfigurationNil
 	}
@@ -150,14 +150,6 @@ func (c *Gonfiguration) ContainsKey(key string) bool {
 	return contains
 }
 
-// GetGonfigurationLen return the len of the config map
-func (c *Gonfiguration) GetGonfigurationLen() (int, error) {
-	if c == nil || c.GonfigurationValues == nil {
-		return 0, errorGonfigurationNil
-	}
-	return len(c.GonfigurationValues), nil
-}
-
 // Clear delete all entrys from the map
 func (c *Gonfiguration) Clear() error {
 	if c == nil || c.GonfigurationValues == nil {
@@ -185,7 +177,19 @@ func (c *Gonfiguration) Dispose() {
 	c.FilePath = ""
 }
 
+// GetLen return the len of the config map
+func (c *Gonfiguration) GetLen() (int, error) {
+	if c == nil || c.GonfigurationValues == nil {
+		return 0, errorGonfigurationNil
+	}
+	return len(c.GonfigurationValues), nil
+}
+
 // GetMap return the map of the Gonfiguration
 func (c *Gonfiguration) GetMap() map[string]string {
+	if c == nil || c.GonfigurationValues == nil {
+		return nil
+	}
+
 	return c.GonfigurationValues
 }
