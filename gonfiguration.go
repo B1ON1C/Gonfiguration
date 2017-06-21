@@ -44,6 +44,32 @@ func (c *Gonfiguration) LoadGonfiguration(path string, validateFunction func(lin
 	return newGonfiguration, nil
 }
 
+// Reload clear the map and load all entrys of the config file
+func (c *Gonfiguration) Reload() error {
+	c.Clear()
+
+	file, err := os.Open(c.FilePath)
+	if err != nil {
+		return errorCantOpenFile
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if c.isGonfigurationLine(line) {
+			code := strings.Split(line, "=")[0]
+			value := strings.Split(line, "=")[1:]
+
+			if c.ContainsKey(strings.ToLower(code)) {
+				return errorMapContainsEntry
+			}
+			c.GonfigurationValues[strings.ToLower(code)] = strings.Join(value, "=")
+		}
+	}
+	return nil
+}
+
 // GetConfigParamAsString return the string value of the given key
 func (c *Gonfiguration) GetConfigParamAsString(key string, def string) (string, error) {
 	if c == nil || c.GonfigurationValues == nil {
@@ -130,28 +156,6 @@ func (c *Gonfiguration) GetGonfigurationLen() (int, error) {
 		return 0, errorGonfigurationNil
 	}
 	return len(c.GonfigurationValues), nil
-}
-
-// Reload clear the map and load all entrys of the config file
-func (c *Gonfiguration) Reload() error {
-	c.Clear()
-
-	file, err := os.Open(c.FilePath)
-	if err != nil {
-		return errorCantOpenFile
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if c.isGonfigurationLine(line) {
-			code := strings.Split(line, "=")[0]
-			value := strings.Split(line, "=")[1:]
-			c.GonfigurationValues[strings.ToLower(code)] = strings.Join(value, "=")
-		}
-	}
-	return nil
 }
 
 // Clear delete all entrys from the map
