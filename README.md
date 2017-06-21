@@ -6,10 +6,11 @@ You only need to create a variable and call the LoadGonfiguration method, it wil
 
 ## Example of a Configuration file
 This code can read a configuration file like the next example:
-
-`# Comment1
+```
+# Comment1
 key=value
 key2=value2
 
 # Comment2
-key3=value3`
+key3=value3
+```
