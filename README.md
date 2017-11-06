@@ -2,7 +2,7 @@
 A text-based configuration manager written in Go for simple apps, fast and lightweight. Feel free to use it!
 
 ## Funcs
-There are a lot of funcs that you can call:
+Funcs than you can call when you create a Gonfiguration object:
 
 ```Go
 - func New(path string, validateFunction func(line string) bool) (*Gonfiguration, error)
